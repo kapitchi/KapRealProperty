@@ -1,6 +1,12 @@
 <?php
+/**
+ * Kapitchi Zend Framework 2 Modules (http://kapitchi.com/)
+ *
+ * @copyright Copyright (c) 2012-2013 Kapitchi Open Source Team (http://kapitchi.com/open-source-team)
+ * @license   http://opensource.org/licenses/LGPL-3.0 LGPL 3.0
+ */
 
-namespace KapitchiRealProperty;
+namespace KapRealProperty;
 
 use Zend\EventManager\EventInterface,
     Zend\ModuleManager\Feature\ControllerProviderInterface,
@@ -38,7 +44,7 @@ class Module extends AbstractModule
             'factories' => array(
                 'realproperty' => function($sm) {
                     $ins = new View\Helper\Property(
-                            $sm->getServiceLocator()->get('KapitchiRealProperty\Service\Property')
+                            $sm->getServiceLocator()->get('KapRealProperty\Service\Property')
                         );
                     return $ins;
                 },
@@ -50,61 +56,61 @@ class Module extends AbstractModule
     {
         return array(
             'invokables' => array(
-                'KapitchiRealProperty\Entity\Property' => 'KapitchiRealProperty\Entity\Property',
-                'KapitchiRealProperty\Entity\PropertyType' => 'KapitchiRealProperty\Entity\PropertyType',
+                'KapRealProperty\Entity\Property' => 'KapRealProperty\Entity\Property',
+                'KapRealProperty\Entity\PropertyType' => 'KapRealProperty\Entity\PropertyType',
             ),
             'factories' => array(
-                'KapitchiRealProperty\Service\Property' => function ($sm) {
+                'KapRealProperty\Service\Property' => function ($sm) {
                     $ins = new Service\Property(
-                        $sm->get('KapitchiRealProperty\Mapper\PropertyDbAdapter'),
-                        $sm->get('KapitchiRealProperty\Entity\Property'),
-                        $sm->get('KapitchiRealProperty\Entity\PropertyHydrator')
+                        $sm->get('KapRealProperty\Mapper\PropertyDbAdapter'),
+                        $sm->get('KapRealProperty\Entity\Property'),
+                        $sm->get('KapRealProperty\Entity\PropertyHydrator')
                     );
                     return $ins;
                 },
-                'KapitchiRealProperty\Mapper\PropertyDbAdapter' => function ($sm) {
+                'KapRealProperty\Mapper\PropertyDbAdapter' => function ($sm) {
                     return new EntityDbAdapterMapper(
                         $sm->get('Zend\Db\Adapter\Adapter'),
                         new EntityDbAdapterMapperOptions(array(
                             'tableName' => 'realproperty_property',
                             'primaryKey' => 'id',
-                            'hydrator' => $sm->get('KapitchiRealProperty\Entity\PropertyHydrator'),
-                            'entityPrototype' => $sm->get('KapitchiRealProperty\Entity\Property'),
+                            'hydrator' => $sm->get('KapRealProperty\Entity\PropertyHydrator'),
+                            'entityPrototype' => $sm->get('KapRealProperty\Entity\Property'),
                         ))
                     );
                 },
-                'KapitchiRealProperty\Entity\PropertyHydrator' => function ($sm) {
+                'KapRealProperty\Entity\PropertyHydrator' => function ($sm) {
                     return new Entity\PropertyHydrator(false);
                 },
-                'KapitchiRealProperty\Form\PropertyInputFilter' => function ($sm) {
+                'KapRealProperty\Form\PropertyInputFilter' => function ($sm) {
                     $ins = new Form\PropertyInputFilter();
                     return $ins;
                 },
-                'KapitchiRealProperty\Form\Property' => function ($sm) {
-                    $ins = new Form\Property($sm->get('KapitchiRealProperty\Service\PropertyType'));
-                    $ins->setInputFilter($sm->get('KapitchiRealProperty\Form\PropertyInputFilter'));
+                'KapRealProperty\Form\Property' => function ($sm) {
+                    $ins = new Form\Property($sm->get('KapRealProperty\Service\PropertyType'));
+                    $ins->setInputFilter($sm->get('KapRealProperty\Form\PropertyInputFilter'));
                     return $ins;
                 },
-                'KapitchiRealProperty\Service\PropertyType' => function ($sm) {
+                'KapRealProperty\Service\PropertyType' => function ($sm) {
                     $ins = new Service\PropertyType(
-                        $sm->get('KapitchiRealProperty\Mapper\PropertyTypeDbAdapter'),
-                        $sm->get('KapitchiRealProperty\Entity\PropertyType'),
-                        $sm->get('KapitchiRealProperty\Entity\PropertyTypeHydrator')
+                        $sm->get('KapRealProperty\Mapper\PropertyTypeDbAdapter'),
+                        $sm->get('KapRealProperty\Entity\PropertyType'),
+                        $sm->get('KapRealProperty\Entity\PropertyTypeHydrator')
                     );
                     return $ins;
                 },
-                'KapitchiRealProperty\Mapper\PropertyTypeDbAdapter' => function ($sm) {
+                'KapRealProperty\Mapper\PropertyTypeDbAdapter' => function ($sm) {
                     return new EntityDbAdapterMapper(
                         $sm->get('Zend\Db\Adapter\Adapter'),
                         new EntityDbAdapterMapperOptions(array(
                             'tableName' => 'realproperty_property_type',
                             'primaryKey' => 'id',
-                            'hydrator' => $sm->get('KapitchiRealProperty\Entity\PropertyTypeHydrator'),
-                            'entityPrototype' => $sm->get('KapitchiRealProperty\Entity\PropertyType'),
+                            'hydrator' => $sm->get('KapRealProperty\Entity\PropertyTypeHydrator'),
+                            'entityPrototype' => $sm->get('KapRealProperty\Entity\PropertyType'),
                         ))
                     );
                 },
-                'KapitchiRealProperty\Entity\PropertyTypeHydrator' => function ($sm) {
+                'KapRealProperty\Entity\PropertyTypeHydrator' => function ($sm) {
                     return new \Zend\Stdlib\Hydrator\ClassMethods(false);
                 },
                 
